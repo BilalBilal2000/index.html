@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIY Kit Registration Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            animation: modalSlide 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes modalSlide {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+        }
+
+        .modal h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .modal p {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .drive-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .drive-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .close-btn {
+            background: #f0f0f0;
+            color: #333;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .error {
+            border-color: #e74c3c !important;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .modal-content {
+                padding: 30px 20px;
+            }
+        }
+
+       /* Add this in your <style> section */
+.footer {
+    text-align: center;
+    padding: 15px 5px 5px 5px ;
+    margin:10;
+    max-width: 480px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    color:black;
+    font-size: 14px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.footer p {
+    margin: 0;
+}
+
+.footer strong {
+    font-weight: 700;
+    color: black;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .footer {
+        margin: 20px 20px 15px;
+        padding: 15px;
+        font-size: 12px;
+    }
+}
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>DIY Kit Registration</h1>
+        <p class="subtitle">Please fill in all the required information below</p>
+
+        <form id="diyForm">
+            <div class="form-group">
+                <label for="fullName">Full Name <span class="required">*</span></label>
+                <input type="text" id="fullName" name="fullName" required>
+                <span class="error-message" id="nameError">Please enter your full name</span>
+            </div>
+
+            <div class="form-group">
+                <label for="schoolNo">School No <span class="required">*</span></label>
+                <input type="text" id="schoolNo" name="schoolNo" required>
+                <span class="error-message" id="schoolError">Please enter your school number</span>
+            </div>
+
+            <div class="form-group">
+                <label for="grade">Grade <span class="required">*</span></label>
+                <select id="grade" name="grade" required>
+                    <option value="">Select Grade</option>
+                    <option value="6th">6th</option>
+                    <option value="7th">7th</option>
+                    <option value="8th">8th</option>
+                </select>
+                <span class="error-message" id="gradeError">Please select a grade</span>
+            </div>
+            <div class="form-group">
+                <label for="studentCount">Student Count <span class="required">*</span></label>
+                <input type="number" id="studentCount" name="studentCount" min="1" max="500"
+                    placeholder="Enter number of students" required>
+                <span class="error-message" id="studentCountError">Please enter student count</span>
+            </div>
+
+            <div class="form-group">
+                <label for="diyKit">DIY Kit Name <span class="required">*</span></label>
+                <select id="diyKit" name="diyKit" required>
+                    <option value="">Select DIY Kit</option>
+                    <option value="">--Select Kit--</option>
+                    <option value="Structure Of Human Skeleton">Structure Of Human Skeleton</option>
+                    <option value="Harnessing Wind Energy">Harnessing Wind Energy</option>
+                    <option value="Harnessing Solar Energy">Harnessing Solar Energy</option>
+                    <option value="Newtons Disk">Newtons Disk</option>
+                    <option value="Colour Shadows">Colour Shadows</option>
+                    <option value="Magnetic Levitation">Magnetic Levitation</option>
+                    <option value="Area Of Triangle">Area Of Triangle</option>
+                    <option value="Structure Of Animal Cell">Structure Of Animal Cell</option>
+                    <option value="Structure Of Plant Cell">Structure Of Plant Cell</option>
+                    <option value="Human Digestive System">Human Digestive System</option>
+                    <option value="Physical Changes">Physical Changes</option>
+                    <option value="Chemical Changes">Chemical Changes</option>
+                    <option value="Winnowing">Winnowing</option>
+                    <option value="Metal Reactivity Series">Metal Reactivity Series</option>
+                    <option value="Science of Shadows">Science of Shadows</option>
+                    <option value="Electromagnetic Swing">Electromagnetic Swing</option>
+                    <option value="Making A Compass">Making A Compass</option>
+                    <option value="DC Motor">DC Motor</option>
+                    <option value="Area & It's Measurement">Area & Its Measurement</option>
+                    <option value="Exploring Electromagnetic Crane">Exploring Electromagnetic Crane</option>
+                    <option value="Electroplating">Electroplating</option>
+                    <option value="Electrolytic refining">Electrolytic refining</option>
+                    <option value="Electrolysis">Electrolysis</option>
+                    <option value="Exploring Series & Parallel Circuits">Exploring Series & Parallel Circuits</option>
+                    <option value="Electricity:Conductor & Insulator">Electricity:Conductor & Insulator</option>
+                    <option value="Conditions For Rusting">Conditions For Rusting</option>
+                    <option value="Sacrificial Corrosion">Sacrificial Corrosion</option>
+                    <option value="Conductivity in Different Medium">Conductivity in Different Medium</option>
+                    <option value="Human Respiratory System">Human Respiratory System</option>
+                    <option value="Human Eye Model">Human Eye Model</option>
+                    <option value="Testing Acid & Bases">Testing Acid & Bases</option>
+                    <option value="Energy Changes In Chemical Reaction">Energy Changes In Chemical Reaction</option>
+                    <option value="Making A Kaleidoscope">Making A Kaleidoscope</option>
+                    <option value="Laws Of Reflection">Laws Of Reflection</option>
+                    <option value="Multiple reflections">Multiple reflections</option>
+                    <option value="Area Of Circle">Area Of Circle</option>
+                    <option value="Sun Dial">Sun Dial</option>
+                </select>
+                <span class="error-message" id="kitError">Please select a DIY kit</span>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">Submit Registration</button>
+        </form>
+        <footer class="footer">
+            <p>Developed & Maintained by <strong> <a href="Follow me on LinkedIn: www.linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=bilalshaikh20" target="_blank">Bilal Shaikh</a></strong></p>
+        </footer>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">✓</div>
+            <h2>Registration Successful!</h2>
+            <p>Your DIY kit registration has been submitted successfully. Access your kit resources using the link
+                below:</p>
+            <a href="#" class="drive-link" id="driveLink" target="_blank">Open DIY Kit Resources</a>
+            <br>
+            <button class="close-btn" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+
+    <script>
+        // DIY Kit Google Drive Links
+        const kitLinks = {
+            // 'Electronics Kit': 'https://drive.google.com/drive/folders/ELECTRONICS_FOLDER_ID',
+            // 'Robotics Kit': 'https://drive.google.com/drive/folders/ROBOTICS_FOLDER_ID',
+            // 'Science Experiment Kit': 'https://drive.google.com/drive/folders/SCIENCE_FOLDER_ID',
+            // 'Coding Kit': 'https://drive.google.com/drive/folders/CODING_FOLDER_ID',
+            // 'Art & Craft Kit': 'https://drive.google.com/drive/folders/ART_FOLDER_ID',
+
+            'Structure Of Human Skeleton': 'https://drive.google.com/drive/folders/14RC4aIr32-TkSQ898RgYDc_ZabUpNOvD?usp=sharing',
+            'Harnessing Wind Energy': 'https://drive.google.com/drive/folders/1LcZwmvSodnjeEk7FXlmVXSzqBnsqryQ_?usp=sharing',
+            'Harnessing Solar Energy': 'https://drive.google.com/drive/folders/1vIaKAI4RsiIF3xJSkWZGSgIh-_U04UXK?usp=sharing',
+            'Newtons Disk': 'https://drive.google.com/drive/folders/1jXCSfyUJHGDxqllICR5lnBa7jbMHFVSv?usp=sharing',
+            'Colour Shadows': 'https://drive.google.com/drive/folders/1jbyk0_ljRAigAKwMx0ROHFpMSrE6QWd5?usp=sharing',
+            'Magnetic Levitation': 'https://drive.google.com/drive/folders/1hWQkC4YK63wxqongkUr3Lomk758RQ3kz?usp=sharing',
+            'Area Of Triangle': 'https://drive.google.com/drive/folders/1XhobIjZ96UCiBn7XljrSBn85I7Tkp-2N?usp=sharing',
+            'Structure Of Animal Cell': 'https://drive.google.com/drive/folders/1hHff8ixOlcTyPBK2Z5sxuMqmvbyrtAGq?usp=sharing',
+            'Structure Of Plant Cell': 'https://drive.google.com/drive/folders/1iq_lGy08oyCzrxI9hI6DgRA-xFjPQnfY?usp=sharing',
+            'Human Digestive System': 'https://drive.google.com/drive/folders/13sks-CBzZUItHACmBnIfxkjNM2g5wyiZ?usp=sharing',
+            'Physical Changes': 'https://drive.google.com/drive/folders/1BLm2AhbqE9q1_2q4rMDpgKiKkqTOQPil?usp=sharing',
+            'Chemical Changes': 'https://drive.google.com/drive/folders/1ISPrx8jdyaiWkc7KmVMv5f2gDJ0OFvyq?usp=sharing',
+            'Winnowing': 'https://drive.google.com/drive/folders/1czpsa3g0TPd1ZmU2obmfZKDBENiU4z2G?usp=sharing',
+            'Metal Reactivity Series': 'https://drive.google.com/drive/folders/1ah8tGWCFJs-GIvnm_I0RxSWLBef4J4pd?usp=sharing',
+            'Science of Shadows': 'https://drive.google.com/drive/folders/1vPRrf4yma-bUubvpFg4nn6iLy_bpSbml?usp=sharing',
+            'Electromagnetic Swing': 'https://drive.google.com/drive/folders/1qek83AZkU2OidyOw9R5skjogFKxHTJG6?usp=sharing',
+            'Magnetic Levitation': 'https://drive.google.com/drive/folders/1cdEt0Vg1i9uu51hHLV7KouQSsICErF4_?usp=sharing',
+            'Making A Compass': 'https://drive.google.com/drive/folders/1w2JysZ09lcCUC0x3mlq7tw_Cy2uvvYMZ?usp=sharing',
+            'DC Motor': 'https://drive.google.com/drive/folders/1JZnVokN4eNlFTnuLGG0oxiD5A3W4Y0o5?usp=sharing',
+            'Area & Its Measurement': 'https://drive.google.com/drive/folders/1hWQkC4YK63wxqongkUr3Lomk758RQ3kz?usp=sharing',
+            'Exploring Electromagnetic Crane': 'https://drive.google.com/drive/folders/1bKkIOJn9WRUozeo8njxH-nX6gBr5f5EY?usp=sharing',
+            'Electroplating': 'https://drive.google.com/drive/folders/1tVbGqNy6kL1P6txwNaH2ZuusAoPCVLsL?usp=sharing',
+            'Electrolytic refining':'https://drive.google.com/drive/folders/1oDP8rFPVY08ajG6iuGGysHEE0iqrBHuB?usp=sharing',
+            'Electrolysis':'https://drive.google.com/drive/folders/1IeT1l6_RwmwM-NX2dL3uNYbbbYSp1tEF?usp=sharing',
+            'Exploring Series & Parallel Circuits': 'https://drive.google.com/drive/folders/1vqS1BM5NW7pEApICIUS5UN3NLtLqF50g?usp=sharing',
+            'Electricity:Conductor & Insulator': 'https://drive.google.com/drive/folders/1MAG5Gi7Xtp9JFP3tHLoBrh2qktOHhIZJ?usp=sharing',
+            'Conditions For Rusting': 'https://drive.google.com/drive/folders/1ec6bczN7w1aAiLI-BfsHZFAZsZZMTgo5?usp=sharing',
+            'Sacrificial Corrosion': 'https://drive.google.com/drive/folders/1_bEpgHtyYbGTwrQl-kCX4qxCPjfXiPU4?usp=sharing',
+            'Conductivity in Different Medium': 'https://drive.google.com/drive/folders/1z2BdZjJISsir5RRrZjK14sI3JH8UHNsD?usp=sharing',
+            'Human Respiratory System': 'https://drive.google.com/drive/folders/10yFCacciX36UWJ3QKGqfoM-wWSbSg9lA?usp=sharing',
+            'Human Eye Model': 'https://drive.google.com/drive/folders/1C3kYEdy8lkLWwNFcOMbYLR6wDeODTOrh?usp=sharing',
+            'Testing Acid & Bases': 'https://drive.google.com/drive/folders/1mit0-JoWtN-JsVFgW0jrrIHe8c2x3uYb?usp=sharing',
+            'Energy Changes In Chemical Reaction': 'https://drive.google.com/drive/folders/1PKrOSlSSXgigZI7fZKaxW_xDkq_J7WoI?usp=sharing',
+            'Making A Kaleidoscope': 'https://drive.google.com/drive/folders/1IOO_nJWyI8KkMvIqT9H3Q0rZkbfOE3ST?usp=sharing',
+            'Laws Of Reflection': 'https://drive.google.com/drive/folders/1tDDwMrXhkAlKkRTL_40hoACk8ylq8aMP?usp=sharing',
+            'Multiple reflections': 'https://drive.google.com/drive/folders/1YuTn-Q_HAsw9MYvYnAZPDVRLV5Dtvu_Q?usp=sharing',
+            'Area Of Circle': 'https://drive.google.com/drive/folders/1q9PQa6GpUrVv8vTeXlYL2TYPZoli3aWi?usp=sharing',
+            'Sun Dial': 'https://drive.google.com/drive/folders/1kE8xUhJd5DvOBTRATQC4vHjaQG9KQJiA?usp=sharing',
+        };
+
+        const form = document.getElementById('diyForm');
+        const modal = document.getElementById('successModal');
+        const submitBtn = document.getElementById('submitBtn');
+        const driveLink = document.getElementById('driveLink');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Validate form
+            if (!validateForm()) {
+                return;
+            }
+
+            // Get form data
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                schoolNo: document.getElementById('schoolNo').value,
+                grade: document.getElementById('grade').value,
+                studentCount: document.getElementById('studentCount').value,
+                diyKit: document.getElementById('diyKit').value,
+                timestamp: new Date().toISOString()
+            };
+
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+
+            // Simulate submission (Replace this with actual Google Apps Script Web App URL)
+            submitToGoogleSheet(formData);
+        });
+
+        function validateForm() {
+
+            let isValid = true;
+
+            const fullName = document.getElementById('fullName');
+            const schoolNo = document.getElementById('schoolNo');
+            const grade = document.getElementById('grade');
+            const studentCount = document.getElementById('studentCount');
+            const diyKit = document.getElementById('diyKit');
+
+            // Reset errors
+            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('input, select').forEach(el => el.classList.remove('error'));
+
+            if (!fullName.value.trim()) {
+                showError(fullName, 'nameError');
+                isValid = false;
+            }
+
+            if (!schoolNo.value.trim()) {
+                showError(schoolNo, 'schoolError');
+                isValid = false;
+            }
+
+            if (!grade.value) {
+                showError(grade, 'gradeError');
+                isValid = false;
+            }
+            if (!studentCount.value || studentCount.value < 1) {
+                showError(studentCount, 'studentCountError');
+                isValid = false;
+            }
+
+            if (!diyKit.value) {
+                showError(diyKit, 'kitError');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function showError(element, errorId) {
+            element.classList.add('error');
+            document.getElementById(errorId).style.display = 'block';
+        }
+
+        function submitToGoogleSheet(data) {
+            // 🔥 PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE
+            const scriptURL = 'https://script.google.com/macros/s/AKfycby1cMYoEICPrUTHj_XrNabvR8K7EUvblnBTY3XMyJTpn4gEvTxcgK_RQFN4EpuNOAQ2/exec';
+
+            console.log('📤 Submitting to:', scriptURL);
+            console.log('📝 Data:', data);
+
+            // Create form data
+            const formData = new FormData();
+            formData.append('timestamp', data.timestamp);
+            formData.append('fullName', data.fullName);
+            formData.append('schoolNo', data.schoolNo);
+            formData.append('grade', data.grade);
+            formData.append('studentCount', data.studentCount);
+            formData.append('diyKit', data.diyKit);
+
+            // Submit to Google Sheets
+            fetch(scriptURL, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    console.log('✅ Response received:', response.status);
+                    return response.text();
+                })
+                .then(result => {
+                    console.log('✅ Result:', result);
+
+                    // Show success modal
+                    const selectedKit = data.diyKit;
+                    driveLink.href = kitLinks[selectedKit] || '#';
+                    showModal();
+
+                    // Reset form
+                    form.reset();
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit Registration';
+                })
+                .catch(error => {
+                    console.log('ℹ️ Request completed (CORS limitation)');
+
+                    // Show success - data was sent even if we can't read response
+                    const selectedKit = data.diyKit;
+                    driveLink.href = kitLinks[selectedKit] || '#';
+                    showModal();
+
+                    form.reset();
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit Registration';
+                });
+        }
+        function showModal() {
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+
+</html>
